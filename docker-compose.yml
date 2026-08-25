@@ -1,0 +1,47 @@
+version: '3.9'
+
+# Local development stack: Postgres + the backend API container.
+# The frontend is intentionally NOT containerized here — run it with
+# `npm run dev` inside frontend/ (or deploy it to Vercel per the README).
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: finance-tracker-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: finance_tracker
+    ports:
+      - '5432:5432'
+    volumes:
+      - finance_tracker_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    container_name: finance-tracker-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT: 5000
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/finance_tracker
+      JWT_SECRET: change_this_dev_secret
+      JWT_EXPIRES_IN: 15m
+      JWT_REFRESH_SECRET: change_this_dev_refresh_secret
+      JWT_REFRESH_EXPIRES_IN: 30d
+      CLIENT_URL: http://localhost:5173
+    ports:
+      - '5000:5000'
+
+volumes:
+  finance_tracker_pgdata:
