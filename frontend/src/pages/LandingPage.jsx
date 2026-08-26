@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Wallet2, Receipt, PieChart, HandCoins, FileBarChart, ShieldCheck,
-  ArrowRight, Sparkles, TrendingUp, Moon, Lock, Zap, Fingerprint, KeyRound,
+  ArrowRight, Sparkles, TrendingUp, Moon, Sun, Lock, Zap, Fingerprint, KeyRound,
 } from 'lucide-react';
 import Tilt3D from '../components/Tilt3D.jsx';
 import Reveal from '../components/Reveal.jsx';
+import { useTheme } from '../context/ThemeContext.jsx';
 
 const FEATURES = [
   {
@@ -87,6 +88,7 @@ const TRUST_DETAILS = [
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
+  const { dark, toggleTheme } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -109,7 +111,14 @@ export default function LandingPage() {
           </span>
           Finance Tracker
         </div>
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
+          <button
+            onClick={toggleTheme}
+            className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+            aria-label="Toggle dark mode"
+          >
+            {dark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
           <Link to="/login" className="btn-ghost">Log in</Link>
           <Link to="/register" className="btn-primary group">
             Get started <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
@@ -320,10 +329,7 @@ export default function LandingPage() {
       <footer className="border-t border-gray-200 px-4 py-12 dark:border-gray-800 sm:px-8">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-1">
-            <div className="flex items-center gap-2 font-display font-semibold text-gray-900 dark:text-gray-100">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-gradient text-white">
-                <Wallet2 size={15} />
-              </span>
+            <div className="font-display text-base font-semibold text-gray-900 dark:text-gray-100">
               Finance Tracker
             </div>
             <p className="mt-3 max-w-xs text-sm text-gray-500 dark:text-gray-400">
