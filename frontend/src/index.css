@@ -34,6 +34,28 @@ body {
   .glass {
     @apply border border-white/40 bg-white/70 backdrop-blur-xl dark:border-gray-800/60 dark:bg-gray-900/60;
   }
+  /* A diagonal light sweep on hover — opt-in via this class alongside
+     `.card`, not baked into every card, since overflow:hidden here would
+     clip any dropdown that happens to render inside one. */
+  .card-shine {
+    @apply relative overflow-hidden;
+  }
+  .card-shine::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.16) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.7s ease;
+    pointer-events: none;
+  }
+  .card-shine:hover::after {
+    transform: translateX(120%);
+  }
+  .bg-dot-grid {
+    background-image: radial-gradient(circle, rgb(124 58 237 / 0.18) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed active:translate-y-px;
   }

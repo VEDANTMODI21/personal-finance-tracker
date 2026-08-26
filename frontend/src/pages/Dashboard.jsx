@@ -69,14 +69,14 @@ export default function Dashboard() {
           </div>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Tilt3D max={4}>
-              <div className="card p-5">
+            <Tilt3D max={5}>
+              <div className="card card-shine p-5">
                 <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Spending by Category</h3>
                 <CategoryDonutChart data={data.categoryBreakdown} />
               </div>
             </Tilt3D>
-            <Tilt3D max={4}>
-              <div className="card p-5">
+            <Tilt3D max={5}>
+              <div className="card card-shine p-5">
                 <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Monthly Spending</h3>
                 <MonthlyLineChart data={data.dailySpending} />
               </div>
@@ -84,14 +84,14 @@ export default function Dashboard() {
           </div>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <Tilt3D max={4}>
-              <div className="card p-5">
+            <Tilt3D max={5}>
+              <div className="card card-shine p-5">
                 <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Income vs Expense</h3>
                 <IncomeExpenseBarChart income={data.summary.income} expenses={data.summary.expenses} />
               </div>
             </Tilt3D>
-            <Tilt3D max={4}>
-              <div className="card p-5">
+            <Tilt3D max={5}>
+              <div className="card card-shine p-5">
                 <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Loan Status</h3>
                 <LoanStatusChart breakdown={data.loanSummary.statusBreakdown} />
               </div>

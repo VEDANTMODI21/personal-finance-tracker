@@ -6,8 +6,8 @@ import { formatCurrency, formatDate } from '../utils/format';
 
 export default function LoanCard({ loan, onEdit, onDelete, onRecordPayment }) {
   return (
-    <Tilt3D max={5}>
-      <div className="card p-4">
+    <Tilt3D max={6}>
+      <div className="card card-shine p-4">
         <div className="flex items-start justify-between">
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-gray-100">{loan.personName}</h3>

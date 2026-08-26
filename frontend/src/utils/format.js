@@ -7,6 +7,21 @@ export function formatCurrency(amount) {
   }).format(value);
 }
 
+// Compact axis-label formatter — the charts used to divide every value by
+// 1000 unconditionally, so anything under ₹1,000 (a very normal expense
+// total) rounded down to "0k" on every single tick. This scales the unit to
+// the value instead: plain rupees under 1k, "k" into the thousands, "L"
+// (lakh) past 100k — matching the en-IN currency formatting used everywhere
+// else in the app.
+export function formatAxisValue(amount) {
+  const value = Number(amount) || 0;
+  const abs = Math.abs(value);
+  const trim = (n) => (Math.round(n * 10) / 10).toString();
+  if (abs >= 100000) return `₹${trim(value / 100000)}L`;
+  if (abs >= 1000) return `₹${trim(value / 1000)}k`;
+  return `₹${Math.round(value)}`;
+}
+
 export function formatCurrencyPrecise(amount) {
   const value = Number(amount) || 0;
   return new Intl.NumberFormat('en-IN', {

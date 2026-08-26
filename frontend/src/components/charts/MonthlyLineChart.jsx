@@ -1,6 +1,6 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { formatCurrency } from '../../utils/format';
+import { formatCurrency, formatAxisValue } from '../../utils/format';
 import EmptyState from '../EmptyState.jsx';
 import { TrendingUp } from 'lucide-react';
 
@@ -16,7 +16,7 @@ function MonthlyLineChart({ data = [] }) {
       <LineChart data={chartData} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" className="stroke-gray-200 dark:stroke-gray-800" />
         <XAxis dataKey="day" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-        <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} width={40} tickFormatter={(v) => `${Math.round(v / 1000)}k`} />
+        <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} width={48} tickFormatter={formatAxisValue} />
         <Tooltip formatter={(value) => formatCurrency(value)} labelFormatter={(l) => `Day ${l}`} />
         <Line type="monotone" dataKey="total" stroke="#7c3aed" strokeWidth={2.5} dot={false} activeDot={{ r: 5 }} />
       </LineChart>

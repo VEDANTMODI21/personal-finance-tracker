@@ -1,15 +1,46 @@
+const nodemailer = require('nodemailer');
 const env = require('../config/env');
 
+let gmailTransporter = null;
+function getGmailTransporter() {
+  if (!env.GMAIL_USER || !env.GMAIL_APP_PASSWORD) return null;
+  if (!gmailTransporter) {
+    gmailTransporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: env.GMAIL_USER, pass: env.GMAIL_APP_PASSWORD },
+    });
+  }
+  return gmailTransporter;
+}
+
 /**
- * Sends the password-reset email via Resend's HTTP API
- * (https://resend.com — free tier, no domain verification required when
- * sending from their `onboarding@resend.dev` sandbox address).
+ * Sends the password-reset email. Tries Gmail SMTP first (free, and able to
+ * deliver to any recipient once you have an "App Password" — see README),
+ * then falls back to Resend's API (resend.com — free tier, but without a
+ * verified custom domain it can only deliver to the Resend account's own
+ * address, which is a hard restriction on their end, not a bug here).
  *
  * Returns { sent: boolean } rather than throwing, so a misconfigured or
  * temporarily-down email provider never turns into a 500 for the user —
  * the caller decides what to show when sending didn't happen.
  */
 async function sendPasswordResetEmail({ to, name, resetUrl }) {
+  const gmail = getGmailTransporter();
+  if (gmail) {
+    try {
+      await gmail.sendMail({
+        from: env.EMAIL_FROM.includes('@') ? env.EMAIL_FROM : `Finance Tracker <${env.GMAIL_USER}>`,
+        to,
+        subject: 'Reset your Finance Tracker password',
+        html: buildResetEmailHtml({ name, resetUrl }),
+      });
+      return { sent: true };
+    } catch (err) {
+      console.error('[email] Gmail SMTP send failed:', err.message);
+      // Fall through to Resend if it's also configured, instead of giving up.
+    }
+  }
+
   if (!env.RESEND_API_KEY) {
     return { sent: false, reason: 'not_configured' };
   }

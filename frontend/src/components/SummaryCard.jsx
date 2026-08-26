@@ -35,8 +35,8 @@ export default function SummaryCard({ label, value, icon: Icon, tone = 'default'
       <div
         className={`absolute inset-2 -z-10 rounded-2xl opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100 ${styles.glow}`}
       />
-      <Tilt3D max={7}>
-        <div className="card p-4 sm:p-5">
+      <Tilt3D max={8}>
+        <div className="card card-shine p-4 sm:p-5">
           <div className="flex items-start justify-between">
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</span>
             {Icon && (

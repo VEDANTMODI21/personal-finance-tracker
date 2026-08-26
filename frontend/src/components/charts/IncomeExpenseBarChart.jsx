@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { formatCurrency } from '../../utils/format';
+import { formatCurrency, formatAxisValue } from '../../utils/format';
 
 function IncomeExpenseBarChart({ income = 0, expenses = 0 }) {
   const data = [
@@ -13,7 +13,7 @@ function IncomeExpenseBarChart({ income = 0, expenses = 0 }) {
       <BarChart data={data} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" className="stroke-gray-200 dark:stroke-gray-800" vertical={false} />
         <XAxis dataKey="name" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-        <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} width={40} tickFormatter={(v) => `${Math.round(v / 1000)}k`} />
+        <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} width={48} tickFormatter={formatAxisValue} />
         <Tooltip formatter={(value) => formatCurrency(value)} />
         <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={72}>
           <Cell fill="#16a34a" />
