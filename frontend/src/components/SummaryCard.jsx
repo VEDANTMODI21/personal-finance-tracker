@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { formatCurrency } from '../utils/format';
 import Tilt3D from './Tilt3D.jsx';
 
@@ -25,8 +25,45 @@ const TONE_STYLES = {
   },
 };
 
+// Animates a number counting up/down toward its new value instead of
+// snapping instantly — small touch, but it's what makes the dashboard feel
+// alive rather than static when you switch months or add a transaction.
+function useCountUp(target, duration = 700) {
+  const [value, setValue] = useState(target);
+  const prevTarget = useRef(target);
+  const rafRef = useRef();
+
+  useEffect(() => {
+    const from = prevTarget.current;
+    const to = target;
+    if (typeof to !== 'number' || from === to) {
+      setValue(to);
+      prevTarget.current = to;
+      return undefined;
+    }
+    const start = performance.now();
+    const animate = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - (1 - progress) ** 3;
+      setValue(from + (to - from) * eased);
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(animate);
+      } else {
+        prevTarget.current = to;
+      }
+    };
+    rafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [target, duration]);
+
+  return value;
+}
+
 export default function SummaryCard({ label, value, icon: Icon, tone = 'default', hint }) {
   const styles = TONE_STYLES[tone];
+  const isNumeric = typeof value === 'number';
+  const animatedValue = useCountUp(isNumeric ? value : 0);
+
   return (
     <div className="group relative">
       {/* Soft tone-matched glow behind the card — subtle at rest, brighter on
@@ -45,8 +82,8 @@ export default function SummaryCard({ label, value, icon: Icon, tone = 'default'
               </span>
             )}
           </div>
-          <p className={`mt-2 text-2xl font-semibold tracking-tight ${styles.text}`}>
-            {typeof value === 'number' ? formatCurrency(value) : value}
+          <p className={`mt-2 text-2xl font-semibold tracking-tight tabular-nums ${styles.text}`}>
+            {isNumeric ? formatCurrency(Math.round(animatedValue)) : value}
           </p>
           {hint && <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">{hint}</p>}
         </div>

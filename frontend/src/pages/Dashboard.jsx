@@ -60,12 +60,12 @@ export default function Dashboard() {
           )}
 
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
-            <SummaryCard label="Income" value={data.summary.income} icon={Wallet} tone="positive" />
-            <SummaryCard label="Expenses" value={data.summary.expenses} icon={Receipt} tone="negative" />
-            <SummaryCard label="Balance" value={data.summary.balance} icon={Scale} tone={data.summary.balance >= 0 ? 'positive' : 'negative'} />
-            <SummaryCard label="Loans Given" value={data.summary.loansGiven} icon={HandCoins} />
-            <SummaryCard label="Repaid" value={data.summary.loansRepaid} icon={TrendingDown} tone="positive" />
-            <SummaryCard label="Outstanding" value={data.summary.outstandingLoans} icon={HandCoins} tone="negative" />
+            <SummaryCard label="Income" value={data.summary.income} icon={Wallet} tone="positive" hint="This month" />
+            <SummaryCard label="Expenses" value={data.summary.expenses} icon={Receipt} tone="negative" hint="This month" />
+            <SummaryCard label="Balance" value={data.summary.balance} icon={Scale} tone={data.summary.balance >= 0 ? 'positive' : 'negative'} hint="All-time total" />
+            <SummaryCard label="Loans Given" value={data.summary.loansGiven} icon={HandCoins} hint="This month" />
+            <SummaryCard label="Repaid" value={data.summary.loansRepaid} icon={TrendingDown} tone="positive" hint="This month" />
+            <SummaryCard label="Outstanding" value={data.summary.outstandingLoans} icon={HandCoins} tone="negative" hint="All-time total" />
           </div>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">

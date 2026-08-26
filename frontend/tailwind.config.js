@@ -80,11 +80,16 @@ export default {
           '0%': { opacity: '0', transform: 'scale(0.96) translateY(6px)' },
           '100%': { opacity: '1', transform: 'scale(1) translateY(0)' },
         },
+        pageIn: {
+          '0%': { opacity: '0', transform: 'translateY(18px) translateZ(-40px) rotateX(6deg)' },
+          '100%': { opacity: '1', transform: 'translateY(0) translateZ(0) rotateX(0deg)' },
+        },
       },
       animation: {
         float: 'float 6s ease-in-out infinite',
         blob: 'blob 14s ease-in-out infinite',
         'pop-in': 'popIn 0.18s ease-out',
+        'page-in': 'pageIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both',
       },
     },
   },

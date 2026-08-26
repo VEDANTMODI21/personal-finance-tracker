@@ -1,6 +1,6 @@
 const prisma = require('../config/prisma');
 const { resolveDateRange, monthLabel } = require('../utils/dateRange');
-const { sum, toNumber } = require('../utils/money');
+const { sum, toNumber, round2 } = require('../utils/money');
 const { enrichLoan } = require('./loan.service');
 
 const CATEGORY_ORDER = [
@@ -11,7 +11,7 @@ const CATEGORY_ORDER = [
 async function getDashboard(userId, query) {
   const { start, end } = resolveDateRange(query);
 
-  const [expenses, incomes, allLoans, budgetUser] = await Promise.all([
+  const [expenses, incomes, allLoans, budgetUser, incomeToDateAgg, expensesToDateAgg] = await Promise.all([
     prisma.expense.findMany({
       where: { userId, date: { gte: start, lte: end } },
       include: { category: true },
@@ -20,11 +20,30 @@ async function getDashboard(userId, query) {
     prisma.income.findMany({ where: { userId, date: { gte: start, lte: end } }, orderBy: { date: 'desc' } }),
     prisma.loan.findMany({ where: { userId }, include: { payments: true } }),
     prisma.user.findUnique({ where: { id: userId } }),
+    // Balance is a running total, not a per-month figure — it should reflect
+    // every rupee ever received/spent up through the end of the selected
+    // month, not just what happened inside that month. Otherwise unspent
+    // income from an earlier month (e.g. July) would simply vanish from the
+    // balance the moment you switch to August.
+    prisma.income.aggregate({ where: { userId, date: { lte: end } }, _sum: { amount: true } }),
+    prisma.expense.aggregate({ where: { userId, date: { lte: end } }, _sum: { amount: true } }),
   ]);
 
   const totalIncome = sum(incomes.map((i) => i.amount));
   const totalExpenses = sum(expenses.map((e) => e.amount));
-  const balance = Math.round((totalIncome - totalExpenses) * 100) / 100;
+
+  const incomeToDate = toNumber(incomeToDateAgg._sum.amount);
+  const expensesToDate = toNumber(expensesToDateAgg._sum.amount);
+  // Loans given reduce cash on hand just like an expense would, and
+  // repayments received add cash back — both need to be folded into the
+  // running balance too, all-time through the end of the selected month.
+  const loansGivenToDate = sum(
+    allLoans.filter((l) => new Date(l.dateGiven) <= end).map((l) => l.amount),
+  );
+  const loansRepaidToDate = sum(
+    allLoans.flatMap((l) => l.payments.filter((p) => new Date(p.paymentDate) <= end)).map((p) => p.amount),
+  );
+  const balance = round2(incomeToDate + loansRepaidToDate - expensesToDate - loansGivenToDate);
 
   const loansGivenInRange = allLoans.filter((l) => new Date(l.dateGiven) >= start && new Date(l.dateGiven) <= end);
   const totalLent = sum(loansGivenInRange.map((l) => l.amount));
