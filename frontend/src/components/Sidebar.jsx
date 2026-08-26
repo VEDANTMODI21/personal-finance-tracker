@@ -21,7 +21,7 @@ export default function Sidebar({ open, onClose }) {
         <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={onClose} aria-hidden="true" />
       )}
       <aside
-        className={`fixed z-40 inset-y-0 left-0 w-64 shrink-0 transform border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 transition-transform lg:static lg:translate-x-0 ${
+        className={`fixed z-40 inset-y-0 left-0 w-64 shrink-0 transform border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-elevate transition-transform lg:static lg:translate-x-0 lg:shadow-none ${
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -41,10 +41,10 @@ export default function Sidebar({ open, onClose }) {
               to={to}
               onClick={onClose}
               className={({ isActive }) =>
-                `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? 'bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400'
-                    : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                    ? 'bg-gradient-to-r from-brand-50 to-brand-100/40 text-brand-700 shadow-inner dark:from-brand-500/15 dark:to-brand-500/5 dark:text-brand-400'
+                    : 'text-gray-600 hover:translate-x-0.5 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                 }`
               }
             >

@@ -24,8 +24,22 @@ const userRoutes = require('./routes/user.routes');
 const app = express();
 
 app.set('trust proxy', 1);
+app.disable('x-powered-by');
 
-app.use(helmet());
+app.use(
+  helmet({
+    // This is a JSON API only (no HTML/JS is ever served from here), so the
+    // CSP mainly matters for the rare error page a proxy might render.
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+      },
+    },
+    crossOriginResourcePolicy: { policy: 'same-site' },
+    referrerPolicy: { policy: 'no-referrer' },
+  }),
+);
 app.use(
   cors({
     origin: env.CLIENT_URL.split(',').map((s) => s.trim()),

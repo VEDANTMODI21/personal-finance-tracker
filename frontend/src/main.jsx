@@ -4,7 +4,10 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { ToastProvider } from './context/ToastContext.jsx';
+import { installDevtoolsDeterrent } from './utils/devtoolsGuard.js';
 import './index.css';
+
+installDevtoolsDeterrent();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

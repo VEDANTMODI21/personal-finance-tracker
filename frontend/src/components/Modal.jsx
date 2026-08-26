@@ -18,9 +18,9 @@ export default function Modal({ open, onClose, title, children, width = 'max-w-l
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/40 p-4 pt-16 sm:pt-24" onMouseDown={onClose}>
+    <div className="fixed inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/50 backdrop-blur-sm p-4 pt-16 sm:pt-24" onMouseDown={onClose}>
       <div
-        className={`w-full ${width} rounded-xl bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-800`}
+        className={`w-full ${width} animate-pop-in rounded-2xl bg-white dark:bg-gray-900 shadow-elevate-lg border border-gray-200 dark:border-gray-800`}
         onMouseDown={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 px-5 py-4">

@@ -5,7 +5,7 @@ import { formatCurrency } from '../../utils/format';
 import EmptyState from '../EmptyState.jsx';
 import { PieChart as PieIcon } from 'lucide-react';
 
-export default function CategoryDonutChart({ data = [] }) {
+function CategoryDonutChart({ data = [] }) {
   if (!data.length) {
     return <EmptyState icon={PieIcon} title="No spending yet" description="Add an expense to see the category breakdown." />;
   }
@@ -31,3 +31,5 @@ export default function CategoryDonutChart({ data = [] }) {
     </ResponsiveContainer>
   );
 }
+
+export default React.memo(CategoryDonutChart);

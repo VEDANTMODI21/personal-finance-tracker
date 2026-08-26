@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { KeyRound } from 'lucide-react';
 import AuthLayout from '../components/AuthLayout.jsx';
+import PasswordStrength from '../components/PasswordStrength.jsx';
 import { authApi } from '../services/auth.api';
 import { extractErrorMessage } from '../services/api';
 
@@ -48,6 +49,7 @@ export default function ResetPassword() {
           <div>
             <label className="label" htmlFor="newPassword">New password</label>
             <input id="newPassword" name="newPassword" type="password" required minLength={8} className="input" value={form.newPassword} onChange={handleChange} />
+            <PasswordStrength password={form.newPassword} />
           </div>
           <div>
             <label className="label" htmlFor="confirmNewPassword">Confirm new password</label>

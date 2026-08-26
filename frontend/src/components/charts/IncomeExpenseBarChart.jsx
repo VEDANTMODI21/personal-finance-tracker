@@ -2,7 +2,7 @@ import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { formatCurrency } from '../../utils/format';
 
-export default function IncomeExpenseBarChart({ income = 0, expenses = 0 }) {
+function IncomeExpenseBarChart({ income = 0, expenses = 0 }) {
   const data = [
     { name: 'Income', value: income },
     { name: 'Expenses', value: expenses },
@@ -23,3 +23,5 @@ export default function IncomeExpenseBarChart({ income = 0, expenses = 0 }) {
     </ResponsiveContainer>
   );
 }
+
+export default React.memo(IncomeExpenseBarChart);

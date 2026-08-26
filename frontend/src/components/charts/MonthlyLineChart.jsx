@@ -4,7 +4,7 @@ import { formatCurrency } from '../../utils/format';
 import EmptyState from '../EmptyState.jsx';
 import { TrendingUp } from 'lucide-react';
 
-export default function MonthlyLineChart({ data = [] }) {
+function MonthlyLineChart({ data = [] }) {
   if (!data.length) {
     return <EmptyState icon={TrendingUp} title="No spending data" description="Daily spending will be plotted here once you add expenses." />;
   }
@@ -23,3 +23,5 @@ export default function MonthlyLineChart({ data = [] }) {
     </ResponsiveContainer>
   );
 }
+
+export default React.memo(MonthlyLineChart);

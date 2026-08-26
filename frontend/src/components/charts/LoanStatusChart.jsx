@@ -11,7 +11,7 @@ const COLORS = {
   OVERDUE: '#dc2626',
 };
 
-export default function LoanStatusChart({ breakdown }) {
+function LoanStatusChart({ breakdown }) {
   const data = Object.entries(breakdown || {}).map(([status, count]) => ({
     status,
     name: LABELS[status] || status,
@@ -39,3 +39,5 @@ export default function LoanStatusChart({ breakdown }) {
     </ResponsiveContainer>
   );
 }
+
+export default React.memo(LoanStatusChart);

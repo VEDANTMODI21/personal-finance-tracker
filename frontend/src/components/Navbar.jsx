@@ -34,7 +34,7 @@ export default function Navbar({ onMenuClick, title }) {
   };
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur px-4 sm:px-6">
+    <header className="glass sticky top-0 z-20 flex h-16 items-center justify-between px-4 shadow-sm sm:px-6">
       <div className="flex items-center gap-3">
         <button className="lg:hidden text-gray-500" onClick={onMenuClick} aria-label="Open menu">
           <Menu size={22} />

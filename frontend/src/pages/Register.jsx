@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus } from 'lucide-react';
 import AuthLayout from '../components/AuthLayout.jsx';
+import PasswordStrength from '../components/PasswordStrength.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { extractErrorMessage } from '../services/api';
 import { useToast } from '../context/ToastContext.jsx';
@@ -55,6 +56,7 @@ export default function Register() {
         <div>
           <label className="label" htmlFor="password">Password</label>
           <input id="password" name="password" type="password" required minLength={8} className="input" value={form.password} onChange={handleChange} placeholder="At least 8 characters" />
+          <PasswordStrength password={form.password} />
         </div>
         <div>
           <label className="label" htmlFor="confirmPassword">Confirm password</label>
