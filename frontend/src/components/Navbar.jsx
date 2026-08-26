@@ -39,7 +39,7 @@ export default function Navbar({ onMenuClick, title }) {
         <button className="lg:hidden text-gray-500" onClick={onMenuClick} aria-label="Open menu">
           <Menu size={22} />
         </button>
-        <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h1>
+        <h1 className="font-display text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h1>
       </div>
 
       <div className="flex items-center gap-2">

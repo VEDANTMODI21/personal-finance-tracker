@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -55,6 +55,13 @@ body {
   .bg-dot-grid {
     background-image: radial-gradient(circle, rgb(124 58 237 / 0.18) 1px, transparent 1px);
     background-size: 26px 26px;
+  }
+  /* A faint film-grain texture — the small thing that makes a gradient-heavy
+     hero/CTA section read as designed rather than a flat CSS gradient.
+     Meant to sit at very low opacity via `opacity-[0.05] mix-blend-overlay`
+     on the element that uses it. */
+  .bg-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed active:translate-y-px;

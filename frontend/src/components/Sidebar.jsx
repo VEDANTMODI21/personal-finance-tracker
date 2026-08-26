@@ -26,7 +26,7 @@ export default function Sidebar({ open, onClose }) {
         }`}
       >
         <div className="flex h-16 items-center justify-between px-5 border-b border-gray-200 dark:border-gray-800">
-          <div className="flex items-center gap-2 font-semibold text-gray-900 dark:text-gray-100">
+          <div className="flex items-center gap-2 font-display font-semibold text-gray-900 dark:text-gray-100">
             <Wallet2 className="text-brand-600" size={22} />
             <span>Finance Tracker</span>
           </div>

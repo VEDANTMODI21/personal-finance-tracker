@@ -26,7 +26,7 @@ export default function AuthLayout({ title, subtitle, children }) {
           <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-white shadow-glow">
             <Wallet2 size={22} />
           </span>
-          <h2 className="mt-7 max-w-sm text-3xl font-bold leading-tight text-white xl:text-4xl">
+          <h2 className="mt-7 max-w-sm font-display text-3xl font-bold leading-tight text-white xl:text-4xl">
             Your money, finally organized.
           </h2>
           <p className="mt-3 max-w-sm text-gray-400">
@@ -78,7 +78,7 @@ export default function AuthLayout({ title, subtitle, children }) {
             </span>
           </div>
           <div className="mb-6 text-center lg:text-left">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{title}</h1>
+            <h1 className="font-display text-2xl font-bold text-gray-900 dark:text-gray-100">{title}</h1>
             {subtitle && <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
           </div>
           <div className="glass rounded-2xl p-6 shadow-elevate-lg sm:p-7">{children}</div>

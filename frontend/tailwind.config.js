@@ -53,6 +53,11 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        // A slightly heavier, more geometric display face reserved for
+        // headings — pairing two type families (rather than leaning on one
+        // font's boldest weight for everything) is a big part of what
+        // makes a landing page read as "designed" instead of "default".
+        display: ['Sora', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         card: '0 1px 2px 0 rgb(0 0 0 / 0.05), 0 1px 3px 0 rgb(0 0 0 / 0.04)',
