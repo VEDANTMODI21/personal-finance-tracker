@@ -1,6 +1,38 @@
 const nodemailer = require('nodemailer');
 const env = require('../config/env');
 
+function parseFromAddress(raw) {
+  // Accepts either "Name <email@x.com>" or a bare "email@x.com".
+  const match = raw.match(/^(.*)<(.+)>$/);
+  if (match) return { name: match[1].trim().replace(/^"|"$/g, ''), email: match[2].trim() };
+  return { name: 'Finance Tracker', email: raw.trim() };
+}
+
+async function sendViaBrevo({ to, name, resetUrl }) {
+  const sender = parseFromAddress(env.EMAIL_FROM);
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'api-key': env.BREVO_API_KEY,
+      'Content-Type': 'application/json',
+      accept: 'application/json',
+    },
+    body: JSON.stringify({
+      sender,
+      to: [{ email: to, name: name || undefined }],
+      subject: 'Reset your Finance Tracker password',
+      htmlContent: buildResetEmailHtml({ name, resetUrl }),
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    console.error('[email] Brevo API responded with an error:', res.status, body);
+    return { sent: false, reason: 'provider_error' };
+  }
+  return { sent: true };
+}
+
 let gmailTransporter = null;
 function getGmailTransporter() {
   if (!env.GMAIL_USER || !env.GMAIL_APP_PASSWORD) return null;
@@ -13,38 +45,26 @@ function getGmailTransporter() {
   return gmailTransporter;
 }
 
-/**
- * Sends the password-reset email. Tries Gmail SMTP first (free, and able to
- * deliver to any recipient once you have an "App Password" — see README),
- * then falls back to Resend's API (resend.com — free tier, but without a
- * verified custom domain it can only deliver to the Resend account's own
- * address, which is a hard restriction on their end, not a bug here).
- *
- * Returns { sent: boolean } rather than throwing, so a misconfigured or
- * temporarily-down email provider never turns into a 500 for the user —
- * the caller decides what to show when sending didn't happen.
- */
-async function sendPasswordResetEmail({ to, name, resetUrl }) {
+async function sendViaGmail({ to, name, resetUrl }) {
   const gmail = getGmailTransporter();
-  if (gmail) {
-    try {
-      await gmail.sendMail({
-        from: env.EMAIL_FROM.includes('@') ? env.EMAIL_FROM : `Finance Tracker <${env.GMAIL_USER}>`,
-        to,
-        subject: 'Reset your Finance Tracker password',
-        html: buildResetEmailHtml({ name, resetUrl }),
-      });
-      return { sent: true };
-    } catch (err) {
-      console.error('[email] Gmail SMTP send failed:', err.message);
-      // Fall through to Resend if it's also configured, instead of giving up.
-    }
+  if (!gmail) return null; // not configured — caller tries the next option
+  try {
+    await gmail.sendMail({
+      from: env.EMAIL_FROM.includes('@') ? env.EMAIL_FROM : `Finance Tracker <${env.GMAIL_USER}>`,
+      to,
+      subject: 'Reset your Finance Tracker password',
+      html: buildResetEmailHtml({ name, resetUrl }),
+    });
+    return { sent: true };
+  } catch (err) {
+    // Most likely cause on Render's free tier: outbound SMTP is blocked and
+    // this call just timed out. Not fatal — fall through to the next option.
+    console.error('[email] Gmail SMTP send failed:', err.message);
+    return { sent: false, reason: 'smtp_failed' };
   }
+}
 
-  if (!env.RESEND_API_KEY) {
-    return { sent: false, reason: 'not_configured' };
-  }
-
+async function sendViaResend({ to, name, resetUrl }) {
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -65,12 +85,40 @@ async function sendPasswordResetEmail({ to, name, resetUrl }) {
       console.error('[email] Resend API responded with an error:', res.status, body);
       return { sent: false, reason: 'provider_error' };
     }
-
     return { sent: true };
   } catch (err) {
-    console.error('[email] Failed to reach the email provider:', err.message);
+    console.error('[email] Failed to reach Resend:', err.message);
     return { sent: false, reason: 'network_error' };
   }
+}
+
+/**
+ * Sends the password-reset email, trying whichever providers are
+ * configured in order: Brevo, then Gmail SMTP, then Resend. Returns
+ * { sent: boolean } rather than throwing, so a misconfigured or down email
+ * provider never turns into a 500 for the user — the caller decides what
+ * to show when sending didn't happen.
+ */
+async function sendPasswordResetEmail({ to, name, resetUrl }) {
+  if (env.BREVO_API_KEY) {
+    const result = await sendViaBrevo({ to, name, resetUrl });
+    if (result.sent) return result;
+  }
+
+  if (env.GMAIL_USER && env.GMAIL_APP_PASSWORD) {
+    const result = await sendViaGmail({ to, name, resetUrl });
+    if (result?.sent) return result;
+  }
+
+  if (env.RESEND_API_KEY) {
+    const result = await sendViaResend({ to, name, resetUrl });
+    if (result.sent) return result;
+  }
+
+  if (!env.BREVO_API_KEY && !env.GMAIL_USER && !env.RESEND_API_KEY) {
+    return { sent: false, reason: 'not_configured' };
+  }
+  return { sent: false, reason: 'all_providers_failed' };
 }
 
 function buildResetEmailHtml({ name, resetUrl }) {
