@@ -1,5 +1,6 @@
 import React from 'react';
 import { formatCurrency } from '../utils/format';
+import Tilt3D from './Tilt3D.jsx';
 
 const TONE_STYLES = {
   default: {
@@ -23,19 +24,21 @@ const TONE_STYLES = {
 export default function SummaryCard({ label, value, icon: Icon, tone = 'default', hint }) {
   const styles = TONE_STYLES[tone];
   return (
-    <div className="card p-4 sm:p-5">
-      <div className="flex items-start justify-between">
-        <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</span>
-        {Icon && (
-          <span className={`rounded-xl p-2.5 shadow-inner ${styles.badge}`}>
-            <Icon size={16} />
-          </span>
-        )}
+    <Tilt3D max={7}>
+      <div className="card p-4 sm:p-5">
+        <div className="flex items-start justify-between">
+          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</span>
+          {Icon && (
+            <span className={`rounded-xl p-2.5 shadow-inner ${styles.badge}`}>
+              <Icon size={16} />
+            </span>
+          )}
+        </div>
+        <p className={`mt-2 text-2xl font-semibold tracking-tight ${styles.text}`}>
+          {typeof value === 'number' ? formatCurrency(value) : value}
+        </p>
+        {hint && <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">{hint}</p>}
       </div>
-      <p className={`mt-2 text-2xl font-semibold tracking-tight ${styles.text}`}>
-        {typeof value === 'number' ? formatCurrency(value) : value}
-      </p>
-      {hint && <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">{hint}</p>}
-    </div>
+    </Tilt3D>
   );
 }

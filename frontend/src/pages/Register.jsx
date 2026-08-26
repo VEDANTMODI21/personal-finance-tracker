@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, User, Mail, Lock } from 'lucide-react';
 import AuthLayout from '../components/AuthLayout.jsx';
 import PasswordStrength from '../components/PasswordStrength.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -47,20 +47,32 @@ export default function Register() {
         )}
         <div>
           <label className="label" htmlFor="name">Full name</label>
-          <input id="name" name="name" required className="input" value={form.name} onChange={handleChange} placeholder="Jane Doe" />
+          <div className="relative">
+            <User size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input id="name" name="name" required className="input pl-9" value={form.name} onChange={handleChange} placeholder="Jane Doe" />
+          </div>
         </div>
         <div>
           <label className="label" htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" required className="input" value={form.email} onChange={handleChange} placeholder="you@example.com" />
+          <div className="relative">
+            <Mail size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input id="email" name="email" type="email" required className="input pl-9" value={form.email} onChange={handleChange} placeholder="you@example.com" />
+          </div>
         </div>
         <div>
           <label className="label" htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" required minLength={8} className="input" value={form.password} onChange={handleChange} placeholder="At least 8 characters" />
+          <div className="relative">
+            <Lock size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input id="password" name="password" type="password" required minLength={8} className="input pl-9" value={form.password} onChange={handleChange} placeholder="At least 8 characters" />
+          </div>
           <PasswordStrength password={form.password} />
         </div>
         <div>
           <label className="label" htmlFor="confirmPassword">Confirm password</label>
-          <input id="confirmPassword" name="confirmPassword" type="password" required className="input" value={form.confirmPassword} onChange={handleChange} placeholder="Re-enter your password" />
+          <div className="relative">
+            <Lock size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input id="confirmPassword" name="confirmPassword" type="password" required className="input pl-9" value={form.confirmPassword} onChange={handleChange} placeholder="Re-enter your password" />
+          </div>
         </div>
         <button type="submit" className="btn-primary w-full" disabled={loading}>
           <UserPlus size={16} />

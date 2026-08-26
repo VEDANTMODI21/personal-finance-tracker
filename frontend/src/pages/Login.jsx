@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, LogIn } from 'lucide-react';
+import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
 import AuthLayout from '../components/AuthLayout.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { extractErrorMessage } from '../services/api';
@@ -44,17 +44,20 @@ export default function Login() {
         )}
         <div>
           <label className="label" htmlFor="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            className="input"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="you@example.com"
-          />
+          <div className="relative">
+            <Mail size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              className="input pl-9"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+            />
+          </div>
         </div>
         <div>
           <div className="flex items-center justify-between">
@@ -64,13 +67,14 @@ export default function Login() {
             </Link>
           </div>
           <div className="relative">
+            <Lock size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               id="password"
               name="password"
               type={showPassword ? 'text' : 'password'}
               required
               autoComplete="current-password"
-              className="input pr-10"
+              className="input pl-9 pr-10"
               value={form.password}
               onChange={handleChange}
               placeholder="••••••••"

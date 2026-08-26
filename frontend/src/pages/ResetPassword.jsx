@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { KeyRound } from 'lucide-react';
+import { KeyRound, Lock } from 'lucide-react';
 import AuthLayout from '../components/AuthLayout.jsx';
 import PasswordStrength from '../components/PasswordStrength.jsx';
 import { authApi } from '../services/auth.api';
@@ -9,8 +9,9 @@ import { extractErrorMessage } from '../services/api';
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const tokenFromLink = searchParams.get('token') || '';
   const [form, setForm] = useState({
-    token: searchParams.get('token') || '',
+    token: tokenFromLink,
     newPassword: '',
     confirmNewPassword: '',
   });
@@ -42,18 +43,29 @@ export default function ResetPassword() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && <div className="rounded-lg bg-red-50 dark:bg-red-500/10 px-3 py-2 text-sm text-red-700 dark:text-red-400">{error}</div>}
-          <div>
-            <label className="label" htmlFor="token">Reset token</label>
-            <input id="token" name="token" required className="input" value={form.token} onChange={handleChange} placeholder="Paste your reset token" />
-          </div>
+          {!tokenFromLink && (
+            <div>
+              <label className="label" htmlFor="token">Reset token</label>
+              <div className="relative">
+                <KeyRound size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input id="token" name="token" required className="input pl-9" value={form.token} onChange={handleChange} placeholder="Paste the token from your email" />
+              </div>
+            </div>
+          )}
           <div>
             <label className="label" htmlFor="newPassword">New password</label>
-            <input id="newPassword" name="newPassword" type="password" required minLength={8} className="input" value={form.newPassword} onChange={handleChange} />
+            <div className="relative">
+              <Lock size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input id="newPassword" name="newPassword" type="password" required minLength={8} className="input pl-9" value={form.newPassword} onChange={handleChange} />
+            </div>
             <PasswordStrength password={form.newPassword} />
           </div>
           <div>
             <label className="label" htmlFor="confirmNewPassword">Confirm new password</label>
-            <input id="confirmNewPassword" name="confirmNewPassword" type="password" required className="input" value={form.confirmNewPassword} onChange={handleChange} />
+            <div className="relative">
+              <Lock size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input id="confirmNewPassword" name="confirmNewPassword" type="password" required className="input pl-9" value={form.confirmNewPassword} onChange={handleChange} />
+            </div>
           </div>
           <button type="submit" className="btn-primary w-full" disabled={loading}>
             <KeyRound size={16} />

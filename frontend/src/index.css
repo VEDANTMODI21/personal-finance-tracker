@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -25,28 +25,28 @@ body {
 
 @layer components {
   .card {
-    @apply bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-elevate transition-all duration-300 ease-out hover:shadow-elevate-lg hover:-translate-y-0.5;
+    @apply bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-elevate transition-all duration-300 ease-out hover:shadow-elevate-lg hover:-translate-y-0.5;
   }
   .glass {
     @apply border border-white/40 bg-white/70 backdrop-blur-xl dark:border-gray-800/60 dark:bg-gray-900/60;
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed active:translate-y-px;
   }
   .btn-primary {
-    @apply btn bg-brand-600 text-white hover:bg-brand-700;
+    @apply btn bg-brand-gradient bg-[length:180%_180%] bg-left text-white shadow-elevate hover:bg-right hover:shadow-glow active:shadow-card;
   }
   .btn-secondary {
-    @apply btn bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700;
+    @apply btn border border-gray-200 bg-white text-gray-700 shadow-elevate hover:-translate-y-0.5 hover:shadow-elevate-lg dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200;
   }
   .btn-danger {
-    @apply btn bg-red-600 text-white hover:bg-red-700;
+    @apply btn bg-gradient-to-br from-red-500 to-rose-600 text-white shadow-elevate hover:brightness-110 hover:shadow-lg active:shadow-card;
   }
   .btn-ghost {
     @apply btn bg-transparent text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800;
   }
   .input {
-    @apply w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100;
+    @apply w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 shadow-inner transition-all focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-500/20 dark:border-gray-800 dark:bg-gray-900/70 dark:text-gray-100 dark:focus:bg-gray-900;
   }
   .label {
     @apply mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300;

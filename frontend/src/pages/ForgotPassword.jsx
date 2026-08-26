@@ -31,10 +31,14 @@ export default function ForgotPassword() {
     <AuthLayout title="Reset your password" subtitle="We'll help you get back in">
       {sent ? (
         <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
-          <p>If an account exists for <strong>{email}</strong>, a reset link has been generated.</p>
+          <p>
+            If an account exists for <strong>{email}</strong>, we&rsquo;ve emailed a reset link to it. It&rsquo;s valid
+            for 1 hour — check your spam folder if it doesn&rsquo;t show up in a minute or two.
+          </p>
           {devToken && (
             <div className="rounded-lg bg-amber-50 dark:bg-amber-500/10 p-3 text-xs text-amber-800 dark:text-amber-400">
-              Dev mode (no email service configured): use this token on the{' '}
+              No email provider is configured yet, so here&rsquo;s your token directly (this only ever appears outside
+              production): use it on the{' '}
               <Link className="underline font-medium" to={`/reset-password?token=${devToken}`}>reset password page</Link>.
             </div>
           )}
@@ -45,7 +49,10 @@ export default function ForgotPassword() {
           {error && <div className="rounded-lg bg-red-50 dark:bg-red-500/10 px-3 py-2 text-sm text-red-700 dark:text-red-400">{error}</div>}
           <div>
             <label className="label" htmlFor="email">Email</label>
-            <input id="email" type="email" required className="input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+            <div className="relative">
+              <Mail size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input id="email" type="email" required className="input pl-9" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+            </div>
           </div>
           <button type="submit" className="btn-primary w-full" disabled={loading}>
             <Mail size={16} />

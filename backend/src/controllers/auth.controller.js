@@ -1,6 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const { success } = require('../utils/apiResponse');
 const authService = require('../services/auth.service');
+const { sendPasswordResetEmail } = require('../services/email.service');
 const env = require('../config/env');
 
 const REFRESH_COOKIE_NAME = 'refreshToken';
@@ -52,13 +53,23 @@ const changePassword = catchAsync(async (req, res) => {
 });
 
 const forgotPassword = catchAsync(async (req, res) => {
-  const { rawToken } = await authService.forgotPassword(req.body.email);
-  // In production this token would be emailed to the user. Since this app
-  // has no email service configured, we return it directly in dev/test so
-  // the flow remains fully testable end-to-end.
+  const { rawToken, user } = await authService.forgotPassword(req.body.email);
+
+  let emailSent = false;
+  if (rawToken && user) {
+    const clientOrigin = env.CLIENT_URL.split(',')[0].trim();
+    const resetUrl = `${clientOrigin}/reset-password?token=${rawToken}`;
+    const result = await sendPasswordResetEmail({ to: user.email, name: user.name, resetUrl });
+    emailSent = result.sent;
+  }
+
   success(res, {
-    message: 'If an account with that email exists, a reset link has been generated.',
-    ...(env.isProd ? {} : { resetToken: rawToken }),
+    message: 'If an account with that email exists, a reset link has been emailed to it.',
+    // The raw token is only ever exposed outside production, and only as a
+    // fallback when no email provider is configured — never once a real
+    // email has actually been sent. This keeps local/dev testing possible
+    // without ever leaking a live reset token in production.
+    ...(!env.isProd && !emailSent ? { resetToken: rawToken } : {}),
   });
 });
 

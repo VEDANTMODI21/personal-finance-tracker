@@ -9,6 +9,7 @@ import IncomeExpenseBarChart from '../components/charts/IncomeExpenseBarChart.js
 import LoanStatusChart from '../components/charts/LoanStatusChart.jsx';
 import TransactionTable from '../components/TransactionTable.jsx';
 import PageLoader from '../components/PageLoader.jsx';
+import Tilt3D from '../components/Tilt3D.jsx';
 import { dashboardApi } from '../services/dashboard.api';
 import { monthKey } from '../utils/format';
 import { formatCurrency } from '../utils/format';
@@ -68,25 +69,33 @@ export default function Dashboard() {
           </div>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <div className="card p-5">
-              <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Spending by Category</h3>
-              <CategoryDonutChart data={data.categoryBreakdown} />
-            </div>
-            <div className="card p-5">
-              <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Monthly Spending</h3>
-              <MonthlyLineChart data={data.dailySpending} />
-            </div>
+            <Tilt3D max={4}>
+              <div className="card p-5">
+                <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Spending by Category</h3>
+                <CategoryDonutChart data={data.categoryBreakdown} />
+              </div>
+            </Tilt3D>
+            <Tilt3D max={4}>
+              <div className="card p-5">
+                <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Monthly Spending</h3>
+                <MonthlyLineChart data={data.dailySpending} />
+              </div>
+            </Tilt3D>
           </div>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <div className="card p-5">
-              <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Income vs Expense</h3>
-              <IncomeExpenseBarChart income={data.summary.income} expenses={data.summary.expenses} />
-            </div>
-            <div className="card p-5">
-              <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Loan Status</h3>
-              <LoanStatusChart breakdown={data.loanSummary.statusBreakdown} />
-            </div>
+            <Tilt3D max={4}>
+              <div className="card p-5">
+                <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Income vs Expense</h3>
+                <IncomeExpenseBarChart income={data.summary.income} expenses={data.summary.expenses} />
+              </div>
+            </Tilt3D>
+            <Tilt3D max={4}>
+              <div className="card p-5">
+                <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200">Loan Status</h3>
+                <LoanStatusChart breakdown={data.loanSummary.statusBreakdown} />
+              </div>
+            </Tilt3D>
           </div>
 
           <div className="card p-5">
