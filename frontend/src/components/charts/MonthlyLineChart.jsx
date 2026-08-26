@@ -18,7 +18,7 @@ function MonthlyLineChart({ data = [] }) {
         <XAxis dataKey="day" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
         <YAxis tick={{ fontSize: 12 }} tickLine={false} axisLine={false} width={40} tickFormatter={(v) => `${Math.round(v / 1000)}k`} />
         <Tooltip formatter={(value) => formatCurrency(value)} labelFormatter={(l) => `Day ${l}`} />
-        <Line type="monotone" dataKey="total" stroke="#2563eb" strokeWidth={2} dot={false} activeDot={{ r: 5 }} />
+        <Line type="monotone" dataKey="total" stroke="#7c3aed" strokeWidth={2.5} dot={false} activeDot={{ r: 5 }} />
       </LineChart>
     </ResponsiveContainer>
   );

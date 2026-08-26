@@ -5,10 +5,10 @@ import EmptyState from '../EmptyState.jsx';
 import { HandCoins } from 'lucide-react';
 
 const COLORS = {
-  PAID: '#16a34a',
-  PARTIALLY_PAID: '#2563eb',
-  OUTSTANDING: '#d97706',
-  OVERDUE: '#dc2626',
+  PAID: '#14b8a6',
+  PARTIALLY_PAID: '#7c3aed',
+  OUTSTANDING: '#f59e0b',
+  OVERDUE: '#f43f5e',
 };
 
 function LoanStatusChart({ breakdown }) {

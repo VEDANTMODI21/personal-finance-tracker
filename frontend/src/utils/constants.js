@@ -33,8 +33,8 @@ export const LABELS = {
 };
 
 export const CATEGORY_COLORS = [
-  '#2563eb', '#16a34a', '#dc2626', '#d97706', '#7c3aed',
-  '#0891b2', '#db2777', '#65a30d', '#ea580c', '#4f46e5', '#78716c',
+  '#7c3aed', '#14b8a6', '#d946ef', '#f59e0b', '#3b82f6',
+  '#10b981', '#ec4899', '#8b5cf6', '#0ea5e9', '#f43f5e', '#84cc16',
 ];
 
 export const STATUS_STYLES = {

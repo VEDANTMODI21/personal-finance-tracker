@@ -25,7 +25,11 @@ body {
 
 @layer components {
   .card {
-    @apply bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-elevate transition-all duration-300 ease-out hover:shadow-elevate-lg hover:-translate-y-0.5;
+    /* A plain black box-shadow is invisible against a near-black dark-mode
+       background, which is why dark mode used to read as completely flat.
+       Dark mode instead gets a faint ring for definition at rest and a
+       colored (not black) glow on hover, which actually shows up. */
+    @apply relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800/80 shadow-elevate dark:shadow-none dark:ring-1 dark:ring-white/[0.06] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-elevate-lg dark:hover:shadow-glow dark:hover:ring-brand-500/40;
   }
   .glass {
     @apply border border-white/40 bg-white/70 backdrop-blur-xl dark:border-gray-800/60 dark:bg-gray-900/60;
