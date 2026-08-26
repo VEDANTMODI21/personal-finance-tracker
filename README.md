@@ -2,6 +2,8 @@
 
 A full-stack personal finance management application: expenses, income, friend-loans with repayment tracking, a monthly analytics dashboard, and PDF/Excel/CSV report exports — built with React, Node.js/Express, PostgreSQL and Prisma.
 
+Link to try the real website: https://personal-finance-tracker-umber-beta.vercel.app/
+
 > Every user only ever sees their own data. Authorization is enforced entirely server-side from the JWT — the frontend never sends a trusted `userId`.
 
 ---
